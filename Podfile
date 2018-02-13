@@ -7,5 +7,5 @@ target 'NewTodoApp' do
 
   # Pods for NewTodoApp
   pod 'Alamofire', '~> 4.5'
-  pod 'AlamofireObjectMapper', '~> 5.0'
+  pod 'ObjectMapper', '2.2.9'
 end
