@@ -9,8 +9,11 @@
 import Foundation
 import ObjectMapper
 
-class BaseModel: Mappable {
+class Base: Mappable {
     var status: String?
+    
+    var statusCode: Int = 200
+    
     
     required init?(map: Map){
         
@@ -18,5 +21,11 @@ class BaseModel: Mappable {
     
     func mapping(map: Map) {
         status <- map["status"]
+    }
+    
+    ///Sets the status code the model object is received from
+    /// - Parameter code: The status code to be set
+    public func setStatusCode(_ code:Int) {
+        self.statusCode = code
     }
 }

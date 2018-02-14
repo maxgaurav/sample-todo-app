@@ -9,6 +9,10 @@
 import Foundation
 import Alamofire
 
+protocol BaseErrorDelegation {
+    func onFail(error: BaseError)
+}
+
 class BaseService {
     
     //MARK: Properties

@@ -9,28 +9,17 @@
 import Foundation
 import ObjectMapper
 
-class LoginModel: BaseModel {
-    var token: String?
-    var user:UserModel?
+class Login: Base {
+    var tokenType: String?
+    var expiresIn: Int?
+    var accessToken: String?
+    var refreshToken: String?
     
     override func mapping(map: Map) {
         super.mapping(map: map)
-        user <- map["user"]
-    }
-}
-
-class UserModel: Mappable {
-    var name:String?
-    var email:String?
-    var id:Int?
-    
-    required init?(map: Map){
-        
-    }
-    
-    func mapping(map: Map) {
-        name <- map["name"]
-        email <- map["email"]
-        id <- map["id"]
+        tokenType <- map["token_type"]
+        expiresIn <- map["expiresIn"]
+        refreshToken <- map["refresh_token"]
+        accessToken <- map["access_token"]
     }
 }

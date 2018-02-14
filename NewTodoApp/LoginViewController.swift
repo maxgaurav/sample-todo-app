@@ -43,39 +43,13 @@ class LoginViewController: UIViewController, AuthenticationServiceDelegate {
         }
     }
     
-    ///Shows alert dialog
-    /// - Parameter title: the title of the alert box
-    /// - Parameter message: the message of the alert box
-    private func showAlert(title: String, message: String, dismissable: Bool = false) -> UIAlertController{
-        let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        if(dismissable) {
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                alert.dismiss(animated: true, completion: nil)
-            }))
-        }
-        
-        
-        self.present(alert, animated: true, completion: nil)
-        
-        return alert
-        
+    public func onLoginFail(error: ValidationError) {
+        let message: String = error.errors?.isEmpty == true ? error.defaultMessage : (error.errors?.first!)!
+        self.showAlert(title: "Error", message: message, dismissable: true)
     }
     
-    ///Function is called on login authentication fail through delegation
-    public func onLoginFail(error: ResponseError) {
+    public func onLoginSuccess(data: Login) {
         
-        if(error.errors!.isEmpty == true){
-            self.showAlert(title: "Error", message: error.defaultError, dismissable: true)
-        }else{
-            self.showAlert(title: "Error", message: error.errors![0], dismissable: true)
-        }
     }
-    
-    public func onLoginSuccess(data: LoginModel) {
-        //MARK: Todo
-        debugPrint("success")
-    }
-
 }
 

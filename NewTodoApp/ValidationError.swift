@@ -9,10 +9,9 @@
 import Foundation
 import ObjectMapper
 
-class ResponseError: BaseModel {
+class ValidationError: BaseError {
     
     var errors: [String]? = []
-    var defaultError: String = "Something went wrong"
     
     required init?(map: Map) {
         super.init(map: map)

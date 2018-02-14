@@ -23,34 +23,36 @@ class AuthenticationService: BaseService {
             "email" : email,
             "password": password,
             "client_id" : self.clientId,
-            "client_secret": self.clientSecret
+            "client_secret": self.clientSecret,
+            "grant_type": "password"
         ]
         
         Alamofire.request(self.getUrl(url: "auth/login"), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: self.baseHeader)
             .validate()
             .responseJSON { response in
                 switch response.result{
+                    
                     case .success:
                         if let data = response.data {
                             let json = String(data: data, encoding: .utf8)
                             
-                            let login = Mapper<LoginModel>().map(JSONString: json!)
+                            let login = Mapper<Login>().map(JSONString: json!)
                             
                             self.delegate?.onLoginSuccess(data: login!)
                         }else{
-                            let errors = Mapper<ResponseError>().map(JSONString: "")
-                            self.delegate?.onLoginFail(error: errors!)
+                            let errors = Mapper<BaseError>().map(JSONString: "")
+                            self.delegate?.onFail(error: errors!)
                         }
                     
                     case .failure:
                         
                         if let data = response.data {
                             let json = String(data: data, encoding: String.Encoding.utf8)
-                            let errors = Mapper<ResponseError>().map(JSONString: json!)
+                            let errors = Mapper<ValidationError>().map(JSONString: json!)
                             self.delegate?.onLoginFail(error: errors!)
                         }else{
-                            let errors = Mapper<ResponseError>().map(JSONString: "")
-                            self.delegate?.onLoginFail(error: errors!)
+                            let errors = Mapper<BaseError>().map(JSONString: "")
+                            self.delegate?.onFail(error: errors!)
                         }
                     
                 }
@@ -59,7 +61,7 @@ class AuthenticationService: BaseService {
 }
 
 ///Authentication delegation to handle various events
-protocol AuthenticationServiceDelegate {
-    func onLoginFail(error: ResponseError)
-    func onLoginSuccess(data: LoginModel)
+protocol AuthenticationServiceDelegate: BaseErrorDelegation {
+    func onLoginFail(error: ValidationError)
+    func onLoginSuccess(data: Login)
 }
