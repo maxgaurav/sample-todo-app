@@ -71,6 +71,11 @@ class LoginViewController: UIViewController, AuthenticationServiceDelegate {
             self.showAlert(title: "Error", message: error.errors![0], dismissable: true)
         }
     }
+    
+    public func onLoginSuccess(data: LoginModel) {
+        //MARK: Todo
+        debugPrint("success")
+    }
 
 }
 

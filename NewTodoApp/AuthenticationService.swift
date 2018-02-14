@@ -31,7 +31,17 @@ class AuthenticationService: BaseService {
             .responseJSON { response in
                 switch response.result{
                     case .success:
-                        debugPrint("success")
+                        if let data = response.data {
+                            let json = String(data: data, encoding: .utf8)
+                            
+                            let login = Mapper<LoginModel>().map(JSONString: json!)
+                            
+                            self.delegate?.onLoginSuccess(data: login!)
+                        }else{
+                            let errors = Mapper<ResponseError>().map(JSONString: "")
+                            self.delegate?.onLoginFail(error: errors!)
+                        }
+                    
                     case .failure:
                         
                         if let data = response.data {
@@ -51,4 +61,5 @@ class AuthenticationService: BaseService {
 ///Authentication delegation to handle various events
 protocol AuthenticationServiceDelegate {
     func onLoginFail(error: ResponseError)
+    func onLoginSuccess(data: LoginModel)
 }
