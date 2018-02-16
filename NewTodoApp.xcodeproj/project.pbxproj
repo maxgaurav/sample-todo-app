@@ -25,6 +25,9 @@
 		2ACB18FE2036BC5600441642 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ACB18FD2036BC5600441642 /* Dashboard.storyboard */; };
 		2ACB19062036DA6A00441642 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB19052036DA6A00441642 /* DashboardViewController.swift */; };
 		2ACB190A2036E88300441642 /* DashboardNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB19092036E88300441642 /* DashboardNavigationController.swift */; };
+		2ACB190C203700B100441642 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB190B203700B100441642 /* ProfileViewController.swift */; };
+		2ACB190E203701B400441642 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB190D203701B400441642 /* UserService.swift */; };
+		2ACB19102037022900441642 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB190F2037022900441642 /* User.swift */; };
 		3E604E518C9EB3D50A818B2F /* Pods_NewTodoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC14E1C42B45303C7B1EBE8 /* Pods_NewTodoApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +53,9 @@
 		2ACB18FD2036BC5600441642 /* Dashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		2ACB19052036DA6A00441642 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		2ACB19092036E88300441642 /* DashboardNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardNavigationController.swift; sourceTree = "<group>"; };
+		2ACB190B203700B100441642 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		2ACB190D203701B400441642 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		2ACB190F2037022900441642 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9BC14E1C42B45303C7B1EBE8 /* Pods_NewTodoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NewTodoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7CC7E0A633B369952DC77E1 /* Pods-NewTodoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewTodoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-NewTodoApp/Pods-NewTodoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,6 +114,7 @@
 			children = (
 				2A201B1C2032BFB600475862 /* BaseService.swift */,
 				2A201B222032CBD100475862 /* AuthenticationService.swift */,
+				2ACB190D203701B400441642 /* UserService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -127,6 +134,7 @@
 				2A3463CF2032F42700B9C0FB /* Errors */,
 				2A3463D22032F44900B9C0FB /* Base.swift */,
 				2A3463D42033219600B9C0FB /* LoginModel.swift */,
+				2ACB190F2037022900441642 /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -146,6 +154,7 @@
 				2ACB18FD2036BC5600441642 /* Dashboard.storyboard */,
 				2ACB19052036DA6A00441642 /* DashboardViewController.swift */,
 				2ACB19092036E88300441642 /* DashboardNavigationController.swift */,
+				2ACB190B203700B100441642 /* ProfileViewController.swift */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -307,11 +316,14 @@
 				2ACB190A2036E88300441642 /* DashboardNavigationController.swift in Sources */,
 				2A201B092032B15500475862 /* LoginViewController.swift in Sources */,
 				2ACB18FB2036B3E200441642 /* DefaultKeys.swift in Sources */,
+				2ACB19102037022900441642 /* User.swift in Sources */,
 				2A3463D52033219600B9C0FB /* LoginModel.swift in Sources */,
 				2ACB19062036DA6A00441642 /* DashboardViewController.swift in Sources */,
 				2A201B232032CBD100475862 /* AuthenticationService.swift in Sources */,
 				2A201B072032B15500475862 /* AppDelegate.swift in Sources */,
 				2A3463D32032F44900B9C0FB /* Base.swift in Sources */,
+				2ACB190E203701B400441642 /* UserService.swift in Sources */,
+				2ACB190C203700B100441642 /* ProfileViewController.swift in Sources */,
 				2A201B202032C42400475862 /* Helper.swift in Sources */,
 				2A3463D72034467000B9C0FB /* BaseError.swift in Sources */,
 			);

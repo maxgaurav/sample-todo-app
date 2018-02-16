@@ -48,14 +48,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="grV-UU-2Ea">
-                                <rect key="frame" x="181" y="439" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <segue destination="gpp-bN-q5s" kind="show" id="lRI-YO-yg3"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -65,10 +57,10 @@
                                 <rect key="frame" x="276" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Profile"/>
+                                <connections>
+                                    <segue destination="gpp-bN-q5s" kind="show" id="PW4-CN-GfT"/>
+                                </connections>
                             </button>
-                            <connections>
-                                <segue destination="gpp-bN-q5s" kind="show" id="QYe-Q6-1CH"/>
-                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -82,7 +74,7 @@
         <!--Profile-->
         <scene sceneID="Mdj-oS-4Ts">
             <objects>
-                <viewController title="Profile" id="gpp-bN-q5s" sceneMemberID="viewController">
+                <viewController title="Profile" id="gpp-bN-q5s" customClass="ProfileViewController" customModule="NewTodoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LrP-zn-f2e"/>
                         <viewControllerLayoutGuide type="bottom" id="BWB-pP-KCE"/>
@@ -113,6 +105,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="nameField" destination="UXK-nY-Us7" id="cgU-Ns-iXI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LIu-1T-d4I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -120,6 +115,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="lRI-YO-yg3"/>
+        <segue reference="Syt-zs-SI8"/>
     </inferredMetricsTieBreakers>
 </document>
