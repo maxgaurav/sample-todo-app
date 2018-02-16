@@ -49,7 +49,13 @@ class LoginViewController: UIViewController, AuthenticationServiceDelegate {
     }
     
     public func onLoginSuccess(data: Login) {
+        //first saving the access token and refresh token in user defaults
+        let defaults = UserDefaults.standard
+        defaults.set(data.accessToken, forKey: defaultKeyStructure.accessToken)
+        defaults.set(data.refreshToken, forKey: defaultKeyStructure.refreshToken)
         
+        
+        //now take the user to dashboard
     }
 }
 

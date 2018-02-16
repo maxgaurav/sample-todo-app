@@ -27,35 +27,26 @@ class AuthenticationService: BaseService {
             "grant_type": "password"
         ]
         
-        Alamofire.request(self.getUrl(url: "auth/login"), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: self.baseHeader)
+        Alamofire.request(self.getUrl(url: "oauth/token"), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: self.baseHeader)
             .validate()
-            .responseJSON { response in
-                switch response.result{
-                    
+            .responseJSON(queue: self.queue) { response in
+                if let data = response.data {
+                    switch response.result{
                     case .success:
-                        if let data = response.data {
-                            let json = String(data: data, encoding: .utf8)
-                            
-                            let login = Mapper<Login>().map(JSONString: json!)
-                            
-                            self.delegate?.onLoginSuccess(data: login!)
-                        }else{
-                            let errors = Mapper<BaseError>().map(JSONString: "")
-                            self.delegate?.onFail(error: errors!)
-                        }
-                    
-                    case .failure:
+                        let json = String(data: data, encoding: .utf8)
+                        let login = Mapper<Login>().map(JSONString: json!)
+                        self.delegate?.onLoginSuccess(data: login!)
                         
-                        if let data = response.data {
-                            let json = String(data: data, encoding: String.Encoding.utf8)
-                            let errors = Mapper<ValidationError>().map(JSONString: json!)
-                            self.delegate?.onLoginFail(error: errors!)
-                        }else{
-                            let errors = Mapper<BaseError>().map(JSONString: "")
-                            self.delegate?.onFail(error: errors!)
-                        }
-                    
+                    case .failure:
+                        let json = String(data: data, encoding: String.Encoding.utf8)
+                        let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.delegate?.onLoginFail(error: errors!)
+                    }
+                }else{
+                    let errors = Mapper<BaseError>().map(JSONString: "")
+                    self.delegate?.onFail(error: errors!)
                 }
+                
         }
     }
 }
