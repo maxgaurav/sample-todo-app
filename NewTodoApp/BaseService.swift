@@ -64,17 +64,28 @@ class BaseService {
                     case .success:
                         let json = String(data: data, encoding: .utf8)
                         let login = Mapper<Login>().map(JSONString: json!)
+                        self.setStatusCode(model: login!, response: response)
                         
                     case .failure:
                         let json = String(data: data, encoding: String.Encoding.utf8)
                         let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
                     }
                 }else{
                     let errors = Mapper<BaseError>().map(JSONString: "")
+                    self.setStatusCode(model: errors!, response: response)
                 }
         }
-            
-        
+    }
+    
+    ///Sets the status code retrieved from the server for the response
+    /// - Parameter model: The model object where the status code needs to be set
+    /// - Parameter response: The response object provided by the Alamofire
+    func setStatusCode(model: Base, response: DataResponse<Any>){
+        if let statusCode = response.response?.statusCode {
+            model.setStatusCode(statusCode)
+        }
+
     }
     
 }

@@ -35,18 +35,20 @@ class AuthenticationService: BaseService {
                     case .success:
                         let json = String(data: data, encoding: .utf8)
                         let login = Mapper<Login>().map(JSONString: json!)
+                        self.setStatusCode(model: login!, response: response)
                         self.delegate?.onLoginSuccess(data: login!)
                         
                     case .failure:
                         let json = String(data: data, encoding: String.Encoding.utf8)
                         let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
                         self.delegate?.onLoginFail(error: errors!)
                     }
                 }else{
                     let errors = Mapper<BaseError>().map(JSONString: "")
                     self.delegate?.onFail(error: errors!)
+                    self.setStatusCode(model: errors!, response: response)
                 }
-                
         }
     }
 }
