@@ -56,6 +56,10 @@ class LoginViewController: UIViewController, AuthenticationServiceDelegate {
         
         
         //now take the user to dashboard
+        var mainView:UIStoryboard = UIStoryboard(name:"Dashboard", bundle: nil)
+        let viewController = mainView.instantiateViewController(withIdentifier: "Dashboard")
+        
+        present(viewController, animated: true, completion: nil)
     }
 }
 

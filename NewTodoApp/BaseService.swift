@@ -29,7 +29,7 @@ class BaseService {
     var apiVersion:String
     
     var baseErrorDelegate: BaseErrorDelegation?
-    var queue:DispatchQueue = DispatchQueue(label:"NetworkService")
+    var queue:DispatchQueue = DispatchQueue(label:"NetworkService",  qos: .utility, attributes: [.concurrent])
     
     init() {
         

@@ -64,22 +64,22 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "clientId"
-            value = "1"
+            value = "3"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "clientSecret"
-            value = "CrkgSnq1Rcu8OSvW3bcOJFz998TqCUBcgRxHhRL4"
+            value = "Ko1hX8twPGg482A81XpWgyFf4qZNaq9G51PcRei0"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "baseUrl"
-            value = "http://app.nalsa.ith"
+            value = "http://todoapp.ith"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "apiVersion"
-            value = "api/v1"
+            value = "api"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
