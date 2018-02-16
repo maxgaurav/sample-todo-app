@@ -61,9 +61,53 @@ class UserService: BaseService {
             }
 
         }
+    }
+    
+    public func updateUser(user: User) {
+        let params: Parameters = [
+            "name" : user.name
+        ]
         
-        
-        
+        Alamofire.request(self.getUser("user"),
+                          method: .post,
+                          parameters: params,
+                          encoding: JSONEncoding.default,
+                          headers: self.baseHeader
+            )
+            .validate()
+            .responseJSON(queue: self.queue){ reponse in
+                if let data = response.data {
+                    switch response.result{
+                    case .success:
+                        let json = String(data: data, encoding: .utf8)
+                        let user = Mapper<User>().map(JSONString: json!)
+                        self.setStatusCode(model: user!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.delegate?.onUserFetchSuccess(data: user!)
+                        }
+                        
+                    case .failure:
+                        let json = String(data: data, encoding: String.Encoding.utf8)
+                        let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.delegate?.onUserFetchFail(errors: errors!)
+                        }
+                    }
+                }else{
+                    let errors = Mapper<BaseError>().map(JSONString: "")
+                    self.setStatusCode(model: errors!, response: response)
+                    
+                    //dispatching the content on main thread
+                    DispatchQueue.main.async {
+                        self.delegate?.onFail(error: errors!)
+                    }
+                }
+            }
     }
     
 }
@@ -72,6 +116,6 @@ class UserService: BaseService {
 protocol UserServiceDelegation: BaseErrorDelegation {
     func onUserFetchSuccess(data: User)
     func onUserFetchFail(errors: ValidationError)
-    func onUserUpdateSuccess()
-    func onUserUpdateFail()
+    func onUserUpdateSuccess(data: User)
+    func onUserUpdateFail(error: ValidationError)
 }
