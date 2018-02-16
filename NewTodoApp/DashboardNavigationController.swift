@@ -1,5 +1,5 @@
 //
-//  DashboardViewController.swift
+//  DashboardNavigationController.swift
 //  NewTodoApp
 //
 //  Created by Max Gaurav on 2/16/18.
@@ -8,15 +8,12 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController {
+class DashboardNavigationController: UINavigationController {
 
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.edgesForExtendedLayout = []
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

@@ -23,8 +23,8 @@
 		2A3463DA203448DC00B9C0FB /* CommonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3463D9203448DB00B9C0FB /* CommonExtensions.swift */; };
 		2ACB18FB2036B3E200441642 /* DefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB18FA2036B3E200441642 /* DefaultKeys.swift */; };
 		2ACB18FE2036BC5600441642 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ACB18FD2036BC5600441642 /* Dashboard.storyboard */; };
-		2ACB19022036C08D00441642 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB19012036C08D00441642 /* DashboardViewController.swift */; };
-		2ACB19042036C0D700441642 /* DashboardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB19032036C0D700441642 /* DashboardTableViewController.swift */; };
+		2ACB19062036DA6A00441642 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB19052036DA6A00441642 /* DashboardViewController.swift */; };
+		2ACB190A2036E88300441642 /* DashboardNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACB19092036E88300441642 /* DashboardNavigationController.swift */; };
 		3E604E518C9EB3D50A818B2F /* Pods_NewTodoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC14E1C42B45303C7B1EBE8 /* Pods_NewTodoApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,8 +48,8 @@
 		2A3463D9203448DB00B9C0FB /* CommonExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonExtensions.swift; path = ../CommonExtensions.swift; sourceTree = "<group>"; };
 		2ACB18FA2036B3E200441642 /* DefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultKeys.swift; sourceTree = "<group>"; };
 		2ACB18FD2036BC5600441642 /* Dashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
-		2ACB19012036C08D00441642 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
-		2ACB19032036C0D700441642 /* DashboardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardTableViewController.swift; sourceTree = "<group>"; };
+		2ACB19052036DA6A00441642 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		2ACB19092036E88300441642 /* DashboardNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardNavigationController.swift; sourceTree = "<group>"; };
 		9BC14E1C42B45303C7B1EBE8 /* Pods_NewTodoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NewTodoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7CC7E0A633B369952DC77E1 /* Pods-NewTodoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewTodoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-NewTodoApp/Pods-NewTodoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,8 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				2ACB18FD2036BC5600441642 /* Dashboard.storyboard */,
-				2ACB19012036C08D00441642 /* DashboardViewController.swift */,
-				2ACB19032036C0D700441642 /* DashboardTableViewController.swift */,
+				2ACB19052036DA6A00441642 /* DashboardViewController.swift */,
+				2ACB19092036E88300441642 /* DashboardNavigationController.swift */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -301,17 +301,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A201B1D2032BFB600475862 /* BaseService.swift in Sources */,
-				2ACB19022036C08D00441642 /* DashboardViewController.swift in Sources */,
 				2A3463DA203448DC00B9C0FB /* CommonExtensions.swift in Sources */,
 				2A201B1A2032B60800475862 /* RegisterViewController.swift in Sources */,
 				2A3463D12032F43900B9C0FB /* ValidationError.swift in Sources */,
+				2ACB190A2036E88300441642 /* DashboardNavigationController.swift in Sources */,
 				2A201B092032B15500475862 /* LoginViewController.swift in Sources */,
 				2ACB18FB2036B3E200441642 /* DefaultKeys.swift in Sources */,
 				2A3463D52033219600B9C0FB /* LoginModel.swift in Sources */,
+				2ACB19062036DA6A00441642 /* DashboardViewController.swift in Sources */,
 				2A201B232032CBD100475862 /* AuthenticationService.swift in Sources */,
 				2A201B072032B15500475862 /* AppDelegate.swift in Sources */,
 				2A3463D32032F44900B9C0FB /* Base.swift in Sources */,
-				2ACB19042036C0D700441642 /* DashboardTableViewController.swift in Sources */,
 				2A201B202032C42400475862 /* Helper.swift in Sources */,
 				2A3463D72034467000B9C0FB /* BaseError.swift in Sources */,
 			);
