@@ -63,19 +63,12 @@ class UserService: BaseService {
         }
     }
     
-    public func updateUser(user: User) {
-        let params: Parameters = [
-            "name" : user.name
-        ]
+    public func updateUser(user: [String:Any]) {
         
-        Alamofire.request(self.getUser("user"),
-                          method: .post,
-                          parameters: params,
-                          encoding: JSONEncoding.default,
-                          headers: self.baseHeader
-            )
+        
+        Alamofire.request(self.getUrl(url: "user"), method: .patch, parameters: user, encoding: JSONEncoding.default, headers: self.baseHeader)
             .validate()
-            .responseJSON(queue: self.queue){ reponse in
+            .responseJSON(queue: self.queue){ response in
                 if let data = response.data {
                     switch response.result{
                     case .success:
@@ -92,6 +85,7 @@ class UserService: BaseService {
                         let json = String(data: data, encoding: String.Encoding.utf8)
                         let errors = Mapper<ValidationError>().map(JSONString: json!)
                         self.setStatusCode(model: errors!, response: response)
+                        debugPrint(json!)
                         
                         //dispatching the content on main thread
                         DispatchQueue.main.async {
@@ -117,5 +111,5 @@ protocol UserServiceDelegation: BaseErrorDelegation {
     func onUserFetchSuccess(data: User)
     func onUserFetchFail(errors: ValidationError)
     func onUserUpdateSuccess(data: User)
-    func onUserUpdateFail(error: ValidationError)
+    func onUserUpdateFail(errors: ValidationError)
 }
