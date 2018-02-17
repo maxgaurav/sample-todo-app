@@ -107,9 +107,15 @@ class UserService: BaseService {
 }
 
 
-protocol UserServiceDelegation: BaseErrorDelegation {
+protocol UserServiceDelegation: BaseErrorDelegation, UserServiceFetchDelegation, UserServiceUpdateDelegation {
+}
+
+protocol UserServiceFetchDelegation: BaseErrorDelegation{
     func onUserFetchSuccess(data: User)
     func onUserFetchFail(errors: ValidationError)
+}
+
+protocol UserServiceUpdateDelegation: BaseErrorDelegation {
     func onUserUpdateSuccess(data: User)
     func onUserUpdateFail(errors: ValidationError)
 }

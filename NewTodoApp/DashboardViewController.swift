@@ -8,9 +8,12 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController {
+class DashboardViewController: UIViewController, TaskServiceDelegation {
 
     //MARK: Properties
+    let taskService: TaskService = TaskService();
+    
+    var tasks: [Task] = []
     
     override func viewWillAppear(_ animated: Bool) {
         self.edgesForExtendedLayout = []
@@ -18,6 +21,8 @@ class DashboardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.taskService.delegate = self
+        self.taskService.getTasks()
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,5 +41,18 @@ class DashboardViewController: UIViewController {
     }
     */
     
+    ///Func is called when tasks has been fetched successfully
+    /// - Parameter: data - Contains the main Tasks Model
+    public func onTasksFetchSuccess(data: Tasks) {
+        self.tasks = data.tasks!
+    }
+    
+    ///Function is called when tasks fetch fails
+    /// Parameter errors: Contains the error message regariding the failure
+    public func onTasksFetchFail(errors: ValidationError) {
+        let message = errors.errors?.isEmpty == true ? errors.defaultMessage : errors.errors?.first!
+        
+        showAlert(title: "Error", message: message!)
+    }
 
 }
