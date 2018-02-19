@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController, TaskServiceDelegation, UITableViewDelegate, UITableViewDataSource {
+class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UITableViewDelegate, UITableViewDataSource {
     
     //MARK: Propertie
     var tasks: [Task] = []
@@ -17,13 +17,13 @@ class DashboardViewController: UIViewController, TaskServiceDelegation, UITableV
     
     
     override func viewWillAppear(_ animated: Bool) {
-        self.edgesForExtendedLayout = []
+        self.taskService.getTasks()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = self
-        self.taskService.delegate = self
+        self.taskService.fetchDelegation = self
         self.taskService.getTasks()
     }
 

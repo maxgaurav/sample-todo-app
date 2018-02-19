@@ -12,7 +12,8 @@ import ObjectMapper
 
 class TaskService: BaseService {
     
-    var delegate: TaskServiceDelegation!
+    var addDelegation: TaskServiceAddDelegation!
+    var fetchDelegation: TaskServiceFetchDelegation!
     
     override init() {
         super.init()
@@ -34,7 +35,7 @@ class TaskService: BaseService {
                         
                         //dispatching the content on main thread
                         DispatchQueue.main.async {
-                            self.delegate?.onTasksFetchSuccess(data: tasks!)
+                            self.fetchDelegation?.onTasksFetchSuccess(data: tasks!)
                         }
                         
                     case .failure:
@@ -44,7 +45,7 @@ class TaskService: BaseService {
                         
                         //dispatching the content on main thread
                         DispatchQueue.main.async {
-                            self.delegate?.onTasksFetchFail(errors: errors!)
+                            self.fetchDelegation?.onTasksFetchFail(errors: errors!)
                         }
                     }
                 }else{
@@ -53,18 +54,65 @@ class TaskService: BaseService {
                     
                     //dispatching the content on main thread
                     DispatchQueue.main.async {
-                        self.delegate?.onFail(error: errors!)
+                        self.fetchDelegation?.onFail(error: errors!)
                     }
                 }
             }
     }
-}
-
-protocol TaskServiceDelegation: TaskServiceFetchDelegation {
     
+    ///Function calls the api to add task
+    /// - Parameter title: The title of the task
+    /// - Parameter description: The descirption of the task
+    public func addTask(title: String, description: String) {
+        
+        let params: Parameters = [
+            "title" : title,
+            "description": description
+        ]
+        
+        Alamofire.request(self.getUrl(url: "tasks"), method:.post, parameters: params, encoding: JSONEncoding.default, headers: self.baseHeader)
+            .validate()
+            .responseJSON(queue: self.queue){ response in
+                if let data = response.data {
+                    switch response.result{
+                    case .success:
+                        let json = String(data: data, encoding: .utf8)
+                        let task = Mapper<CreateTask>().map(JSONString: json!)?.task
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.addDelegation?.onTaskAddSuccess(data: task!)
+                        }
+                        
+                    case .failure:
+                        let json = String(data: data, encoding: String.Encoding.utf8)
+                        let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.addDelegation?.onTaskAddFail(errors: errors!)
+                        }
+                    }
+                }else{
+                    let errors = Mapper<BaseError>().map(JSONString: "")
+                    self.setStatusCode(model: errors!, response: response)
+                    
+                    //dispatching the content on main thread
+                    DispatchQueue.main.async {
+                        self.addDelegation?.onFail(error: errors!)
+                    }
+                }
+        }
+    }
 }
 
 protocol TaskServiceFetchDelegation: BaseErrorDelegation{
     func onTasksFetchSuccess(data: Tasks)
     func onTasksFetchFail(errors: ValidationError)
+}
+
+protocol TaskServiceAddDelegation: BaseErrorDelegation {
+    func onTaskAddSuccess(data: Task)
+    func onTaskAddFail(errors: ValidationError)
 }

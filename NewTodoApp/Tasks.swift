@@ -33,3 +33,12 @@ class Task: Base {
     }
     
 }
+
+class CreateTask: Base {
+    var task: Task?
+    
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        task <- map["task"]
+    }
+}
