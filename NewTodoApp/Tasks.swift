@@ -25,4 +25,11 @@ class Task: Base {
     var title: String?
     var description: String?
     
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        id <- map["id"]
+        title <- map["title"]
+        description <- map["description"]
+    }
+    
 }

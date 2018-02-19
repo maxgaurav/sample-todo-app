@@ -11,9 +11,12 @@ import UIKit
 class DashboardTableViewCell: UITableViewCell {
     
     //MARK: Properties
+
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskDescription: UILabel!
-
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

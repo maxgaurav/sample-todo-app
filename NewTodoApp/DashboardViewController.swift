@@ -8,12 +8,13 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController, TaskServiceDelegation {
-
-    //MARK: Properties
-    let taskService: TaskService = TaskService();
+class DashboardViewController: UIViewController, TaskServiceDelegation, UITableViewDelegate, UITableViewDataSource {
     
+    //MARK: Propertie
     var tasks: [Task] = []
+    let taskService: TaskService = TaskService()
+    @IBOutlet weak var tableView: UITableView!
+    
     
     override func viewWillAppear(_ animated: Bool) {
         self.edgesForExtendedLayout = []
@@ -21,6 +22,7 @@ class DashboardViewController: UIViewController, TaskServiceDelegation {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.dataSource = self
         self.taskService.delegate = self
         self.taskService.getTasks()
     }
@@ -45,6 +47,7 @@ class DashboardViewController: UIViewController, TaskServiceDelegation {
     /// - Parameter: data - Contains the main Tasks Model
     public func onTasksFetchSuccess(data: Tasks) {
         self.tasks = data.tasks!
+        self.tableView.reloadData()
     }
     
     ///Function is called when tasks fetch fails
@@ -54,5 +57,34 @@ class DashboardViewController: UIViewController, TaskServiceDelegation {
         
         showAlert(title: "Error", message: message!)
     }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return self.tasks.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Table view cells are reused and should be dequeued using a cell identifier.
+        let cellIdentifier = "DashboardTableViewCell"
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? DashboardTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of DashboardTableViewCell.")
+        }
+        
+        // Fetches the appropriate meal for the data source layout.
+        let task = tasks[indexPath.row]
+        
+        cell.taskTitle.text = task.title!
+        cell.taskDescription.text = task.description!
+        
+        return cell
+    }
+ 
 
 }
