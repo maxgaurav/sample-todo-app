@@ -42,3 +42,5 @@ class CreateTask: Base {
         task <- map["task"]
     }
 }
+
+class EditTask: CreateTask{}

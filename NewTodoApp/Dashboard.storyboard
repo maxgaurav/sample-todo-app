@@ -50,7 +50,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p5f-qg-Ti9" id="lKj-vd-tDq">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="69.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Task Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEE-ZU-36Y">
@@ -79,6 +79,9 @@
                                                     <rect key="frame" x="207" y="3" width="60" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Edit"/>
+                                                    <connections>
+                                                        <action selector="onEditClick:" destination="p5f-qg-Ti9" eventType="touchDown" id="2JE-ug-8On"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -116,6 +119,7 @@
                         <outlet property="tableView" destination="IOc-0F-sKO" id="EH7-KG-7hX"/>
                         <segue destination="gpp-bN-q5s" kind="show" id="Syt-zs-SI8"/>
                         <segue destination="kTH-VG-kJJ" kind="show" id="S10-CM-XrR"/>
+                        <segue destination="frE-Le-MGk" kind="show" id="0Bu-IH-u3z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bXV-jV-SjI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -125,7 +129,7 @@
         <!--Add Task-->
         <scene sceneID="A74-Eh-uwR">
             <objects>
-                <viewController title="Add Task" id="kTH-VG-kJJ" customClass="AddTaskViewController" customModule="NewTodoApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddTask" title="Add Task" id="kTH-VG-kJJ" customClass="AddTaskViewController" customModule="NewTodoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Nks-St-xAy"/>
                         <viewControllerLayoutGuide type="bottom" id="byl-UV-tK2"/>
@@ -134,7 +138,7 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysM-eR-sf5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysM-eR-sf5">
                                 <rect key="frame" x="16" y="160" width="63" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -182,10 +186,70 @@
             </objects>
             <point key="canvasLocation" x="-703.20000000000005" y="1012.4437781109445"/>
         </scene>
+        <!--Edit Task-->
+        <scene sceneID="jO8-f5-ahD">
+            <objects>
+                <viewController storyboardIdentifier="EditTask" title="Edit Task" id="frE-Le-MGk" customClass="EditTaskViewController" customModule="NewTodoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QXp-mw-b9m"/>
+                        <viewControllerLayoutGuide type="bottom" id="4HM-1y-ow0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Gue-rl-7Pq">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4my-v6-thX">
+                                <rect key="frame" x="16" y="140" width="63" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="riB-e6-YtF">
+                                <rect key="frame" x="16" y="169" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kvM-Ph-afs">
+                                <rect key="frame" x="16" y="355" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Update"/>
+                                <connections>
+                                    <action selector="onUpdateClick:" destination="frE-Le-MGk" eventType="touchDown" id="sn4-2t-j4E"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymR-Wv-EtL">
+                                <rect key="frame" x="16" y="238" width="132" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="161-FH-jHt">
+                                <rect key="frame" x="16" y="267" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="descriptionField" destination="161-FH-jHt" id="VB5-7W-q0z"/>
+                        <outlet property="titleField" destination="riB-e6-YtF" id="0qU-Jr-Mnu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E0I-3f-2xN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="402" y="1026"/>
+        </scene>
         <!--Profile-->
         <scene sceneID="Mdj-oS-4Ts">
             <objects>
-                <viewController title="Profile" id="gpp-bN-q5s" customClass="ProfileViewController" customModule="NewTodoApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Profile" title="Profile" id="gpp-bN-q5s" customClass="ProfileViewController" customModule="NewTodoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LrP-zn-f2e"/>
                         <viewControllerLayoutGuide type="bottom" id="BWB-pP-KCE"/>
@@ -229,7 +293,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Syt-zs-SI8"/>
         <segue reference="u53-AR-SJ8"/>
+        <segue reference="PW4-CN-GfT"/>
     </inferredMetricsTieBreakers>
 </document>

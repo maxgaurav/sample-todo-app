@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UITableViewDelegate, UITableViewDataSource, TaskServiceDeleteDelegation {
+class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UITableViewDelegate, UITableViewDataSource, TaskServiceDeleteDelegation, DashboardCellDelegation {
     
     //MARK: Propertie
     var tasks: [Task] = []
@@ -76,7 +76,14 @@ class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UIT
         let message = errors.errors?.isEmpty == true ? errors.defaultMessage : errors.errors?.first!
         showAlert(title: "Error", message: message!)
     }
-    
+ 
+    ///Mark: TableViewCell Delegation
+    public func editClick(task:Task) {
+        let storyboard:UIStoryboard = UIStoryboard(name: "Dashboard", bundle: nil)
+        let viewController: EditTaskViewController  = storyboard.instantiateViewController(withIdentifier: "EditTask") as! EditTaskViewController
+        viewController.task = task
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
     
     ///Mark: TableView
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -105,6 +112,7 @@ class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UIT
         cell.taskDescription.text = task.description!
         cell.task = task
         cell.taskService.removeDelegation = self
+        cell.delegation = self
         
         return cell
     }

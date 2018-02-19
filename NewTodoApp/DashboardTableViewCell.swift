@@ -17,6 +17,7 @@ class DashboardTableViewCell: UITableViewCell {
 
     var task:Task!
     var taskIndex:Int = -1
+    var delegation: DashboardCellDelegation?
     
     var taskService: TaskService = TaskService()
     
@@ -30,6 +31,7 @@ class DashboardTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+
     
     ///Mark: Actions
     
@@ -37,15 +39,11 @@ class DashboardTableViewCell: UITableViewCell {
         self.taskService.removeTask(taskId: self.task.id!)
     }
     
-    
-
-    
-    //////Mark: Task Delete Delegations
-    public func onTaskDeletedSucces(taskId: Int) {
-        //code need to remove task
+    @IBAction func onEditClick(_ sender: UIButton) {
+        self.delegation?.editClick(task: self.task!)
     }
-    
-    public func onTaskDeleteFail(errors: ValidationError) {
+}
 
-    }
+protocol DashboardCellDelegation {
+    func editClick(task: Task)
 }

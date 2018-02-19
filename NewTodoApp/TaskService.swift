@@ -15,6 +15,7 @@ class TaskService: BaseService {
     var addDelegation: TaskServiceAddDelegation!
     var fetchDelegation: TaskServiceFetchDelegation!
     var removeDelegation: TaskServiceDeleteDelegation!
+    var editDelegation: TaskServiceEditDelegation!
     
     override init() {
         super.init()
@@ -107,6 +108,8 @@ class TaskService: BaseService {
         }
     }
     
+    ///Function calls api to delete task and delegates the action back to main thread with task id being deleted
+    /// - Parameter taskId: Id of the task being removed
     public func removeTask(taskId: Int){
         Alamofire.request(self.getUrl(url: ("tasks/" + "\(taskId)")), method: .delete, headers: self.baseHeader)
             .validate()
@@ -140,6 +143,52 @@ class TaskService: BaseService {
                 }
         }
     }
+    
+    ///Update the task content through API
+    /// - Parameter taskId: The task id of the task
+    /// - Parameter title: The new title of the task
+    /// - Parameter description: The new description of the task
+    public func editTask(taskId: Int, title: String, description: String) {
+        let params: Parameters = [
+            "title": title,
+            "description": description
+        ]
+        
+        Alamofire.request(self.getUrl(url: ("tasks/" + "\(taskId)")), method: .patch, parameters: params, encoding: JSONEncoding.default, headers: self.baseHeader)
+            .validate()
+            .responseJSON(queue: self.queue){ response in
+                if let data = response.data {
+                    switch response.result{
+                    case .success:
+                        //dispatching the content on main thread
+                        let json = String(data: data, encoding: .utf8)
+                        let task = Mapper<EditTask>().map(JSONString: json!)?.task
+                        DispatchQueue.main.async {
+                            self.editDelegation?.onTaskEditSuccess(data: task!)
+                        }
+                        
+                    case .failure:
+                        let json = String(data: data, encoding: String.Encoding.utf8)
+                        let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.editDelegation?.onTaskEditFail(errors: errors!)
+                        }
+                    }
+                }else{
+                    let errors = Mapper<BaseError>().map(JSONString: "")
+                    self.setStatusCode(model: errors!, response: response)
+                    
+                    //dispatching the content on main thread
+                    DispatchQueue.main.async {
+                        self.editDelegation?.onFail(error: errors!)
+                    }
+                }
+        }
+    }
+    
 }
 
 protocol TaskServiceFetchDelegation: BaseErrorDelegation{
@@ -155,4 +204,9 @@ protocol TaskServiceAddDelegation: BaseErrorDelegation {
 protocol TaskServiceDeleteDelegation:BaseErrorDelegation {
     func onTaskDeletedSucces(taskId: Int)
     func onTaskDeleteFail(errors: ValidationError)
+}
+
+protocol TaskServiceEditDelegation: BaseErrorDelegation {
+    func onTaskEditSuccess(data: Task)
+    func onTaskEditFail(errors: ValidationError)
 }
