@@ -14,6 +14,7 @@ class TaskService: BaseService {
     
     var addDelegation: TaskServiceAddDelegation!
     var fetchDelegation: TaskServiceFetchDelegation!
+    var removeDelegation: TaskServiceDeleteDelegation!
     
     override init() {
         super.init()
@@ -105,6 +106,40 @@ class TaskService: BaseService {
                 }
         }
     }
+    
+    public func removeTask(taskId: Int){
+        Alamofire.request(self.getUrl(url: ("tasks/" + "\(taskId)")), method: .delete, headers: self.baseHeader)
+            .validate()
+            .responseJSON(queue: self.queue){ response in
+                if let data = response.data {
+                    switch response.result{
+                    case .success:
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.removeDelegation?.onTaskDeletedSucces(taskId: taskId)
+                        }
+                        
+                    case .failure:
+                        let json = String(data: data, encoding: String.Encoding.utf8)
+                        let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.removeDelegation?.onTaskDeleteFail(errors: errors!)
+                        }
+                    }
+                }else{
+                    let errors = Mapper<BaseError>().map(JSONString: "")
+                    self.setStatusCode(model: errors!, response: response)
+                    
+                    //dispatching the content on main thread
+                    DispatchQueue.main.async {
+                        self.removeDelegation?.onFail(error: errors!)
+                    }
+                }
+        }
+    }
 }
 
 protocol TaskServiceFetchDelegation: BaseErrorDelegation{
@@ -115,4 +150,9 @@ protocol TaskServiceFetchDelegation: BaseErrorDelegation{
 protocol TaskServiceAddDelegation: BaseErrorDelegation {
     func onTaskAddSuccess(data: Task)
     func onTaskAddFail(errors: ValidationError)
+}
+
+protocol TaskServiceDeleteDelegation:BaseErrorDelegation {
+    func onTaskDeletedSucces(taskId: Int)
+    func onTaskDeleteFail(errors: ValidationError)
 }

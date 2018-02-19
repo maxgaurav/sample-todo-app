@@ -14,8 +14,11 @@ class DashboardTableViewCell: UITableViewCell {
 
     @IBOutlet weak var taskTitle: UILabel!
     @IBOutlet weak var taskDescription: UILabel!
+
+    var task:Task!
+    var taskIndex:Int = -1
     
-    
+    var taskService: TaskService = TaskService()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,5 +30,22 @@ class DashboardTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    ///Mark: Actions
+    
+    @IBAction func onRemoveClick(_ sender: Any) {
+        self.taskService.removeTask(taskId: self.task.id!)
+    }
+    
+    
 
+    
+    //////Mark: Task Delete Delegations
+    public func onTaskDeletedSucces(taskId: Int) {
+        //code need to remove task
+    }
+    
+    public func onTaskDeleteFail(errors: ValidationError) {
+
+    }
 }

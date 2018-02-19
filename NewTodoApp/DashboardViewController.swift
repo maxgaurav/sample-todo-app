@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UITableViewDelegate, UITableViewDataSource {
+class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UITableViewDelegate, UITableViewDataSource, TaskServiceDeleteDelegation {
     
     //MARK: Propertie
     var tasks: [Task] = []
@@ -24,6 +24,7 @@ class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UIT
         super.viewDidLoad()
         self.tableView.dataSource = self
         self.taskService.fetchDelegation = self
+        self.taskService.removeDelegation = self
         self.taskService.getTasks()
     }
 
@@ -43,6 +44,9 @@ class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UIT
     }
     */
     
+    ///Mark: Delegations
+    
+    ///Mark: Task Fetch Delegations
     ///Func is called when tasks has been fetched successfully
     /// - Parameter: data - Contains the main Tasks Model
     public func onTasksFetchSuccess(data: Tasks) {
@@ -55,9 +59,26 @@ class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UIT
     public func onTasksFetchFail(errors: ValidationError) {
         let message = errors.errors?.isEmpty == true ? errors.defaultMessage : errors.errors?.first!
         
+        self.showAlert(title: "Error", message: message!)
+    }
+    
+    //////Mark: Task Delete Delegations
+    public func onTaskDeletedSucces(taskId: Int) {
+        let index = self.tasks.index(where: { (task: Task) -> Bool in
+            return task.id == taskId
+        })
+        
+        self.tasks.remove(at: index!)
+        self.tableView.reloadData()
+    }
+    
+    public func onTaskDeleteFail(errors: ValidationError) {
+        let message = errors.errors?.isEmpty == true ? errors.defaultMessage : errors.errors?.first!
         showAlert(title: "Error", message: message!)
     }
     
+    
+    ///Mark: TableView
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -82,6 +103,8 @@ class DashboardViewController: UIViewController, TaskServiceFetchDelegation, UIT
         
         cell.taskTitle.text = task.title!
         cell.taskDescription.text = task.description!
+        cell.task = task
+        cell.taskService.removeDelegation = self
         
         return cell
     }
