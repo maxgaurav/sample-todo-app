@@ -14,6 +14,7 @@ class AuthenticationService: BaseService {
     
     var delegate: AuthenticationServiceDelegate!
     var logoutDelegate: AuthenticationServiceLogoutDelegate?
+    var registerDelegate: AuthenticationServiceRegisterDelegate?
 
     
     ///Calls login api
@@ -108,6 +109,56 @@ class AuthenticationService: BaseService {
                 }
         }
     }
+    
+    ///Function calls the register API to register the user in system
+    /// - Parameter email: The email of the user
+    /// - Parameter password: Password for the account
+    /// - Parameter name: Name of the user
+    public func register(email: String, password: String, name: String) {
+        let params : Parameters = [
+            "client_id" : self.clientId,
+            "client_secret": self.clientSecret,
+            "name": name,
+            "password": password,
+            "email": email
+        ]
+        
+        Alamofire.request(self.getUrl(url: "oauth/register"), method: .post, parameters: params, encoding: JSONEncoding.default, headers: self.baseHeader)
+            .validate()
+            .responseJSON(queue:self.queue) { response in
+                if let data = response.data {
+                    switch response.result{
+                    case .success:
+                        let json = String(data: data, encoding: .utf8)
+                        let login = Mapper<Login>().map(JSONString: json!)
+                        self.setStatusCode(model: login!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.registerDelegate?.onRegisterSuccess(data: login!)
+                        }
+                        
+                    case .failure:
+                        let json = String(data: data, encoding: String.Encoding.utf8)
+                        let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.registerDelegate?.onRegisterFail(errors: errors!)
+                        }
+                    }
+                }else{
+                    let errors = Mapper<BaseError>().map(JSONString: "")
+                    self.setStatusCode(model: errors!, response: response)
+                    
+                    //dispatching the content on main thread
+                    DispatchQueue.main.async {
+                        self.registerDelegate?.onFail(error: errors!)
+                    }
+                }
+            }
+    }
 }
 
 ///Authentication delegation to handle various events
@@ -120,4 +171,11 @@ protocol AuthenticationServiceDelegate: BaseErrorDelegation {
 protocol AuthenticationServiceLogoutDelegate {
     func onLogoutFail(error: ValidationError)
     func onLogoutSuccess(data: Base)
+}
+
+///Register Delegation
+protocol AuthenticationServiceRegisterDelegate:BaseErrorDelegation {
+    func onRegisterSuccess(data: Login)
+    func onRegisterFail(errors: ValidationError)
+    
 }

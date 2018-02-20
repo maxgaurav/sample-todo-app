@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController, AuthenticationServiceRegisterDelegate {
     
     //MARK: Properties
 
@@ -16,11 +16,14 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     
+    let authenticationService: AuthenticationService = AuthenticationService()
+    
     //MARK: Default
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
+        self.authenticationService.registerDelegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,29 +36,35 @@ class RegisterViewController: UIViewController {
     
     @IBAction public func onRegister(_ sender: UIButton) {
         if(self.emailField?.text == "") {
-            self.showAlert(title: "Error", message: "Email field is requried")
+            self.showAlert(title: "Error", message: "Email field is requried", dismissable: true)
         }else if(self.nameField?.text == "") {
-            self.showAlert(title: "Error", message: "Message field is requried")
+            self.showAlert(title: "Error", message: "Message field is requried", dismissable: true)
         }else if(self.passwordField?.text == ""){
-            self.showAlert(title: "Error", message: "Password field is requried")
+            self.showAlert(title: "Error", message: "Password field is requried", dismissable: true)
         }else{
-            debugPrint("Pass")
+            self.authenticationService.register(email: self.emailField.text!, password: self.passwordField.text!, name: self.nameField.text!)
         }
-        
     }
     
-    ///Shows alert dialog
-    /// - Parameter title: the title of the alert box
-    /// - Parameter message: the message of the alert box
-    private func showAlert(title: String, message: String){
-        let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    
+    ///MARK: Delegations
+    ///MARK: Register Delegations
+    
+    
+    ///Function is called when register service is successfull
+    public func onRegisterSuccess(data: Login) {
+        let defaults = UserDefaults.standard
+        defaults.set(data.accessToken, forKey: defaultKeyStructure.accessToken)
+        defaults.set(data.refreshToken, forKey: defaultKeyStructure.refreshToken)
         
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            alert.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.changeRootViewController(storboardName: "Dashboard", viewControllerIdentifier: "DashboardNavigation")
+    }
+    
+    ///Function is called when register service fails
+    public func onRegisterFail(errors: ValidationError) {
+        let message = errors.errors?.isEmpty == true || errors.errors == nil ? errors.defaultMessage : errors.errors?.first!
+        showAlert(title: "Error", message: message!, dismissable: true)
     }
 
 }
