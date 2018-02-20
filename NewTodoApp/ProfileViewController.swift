@@ -9,15 +9,17 @@
 import UIKit
 import ObjectMapper
 
-class ProfileViewController: UIViewController,UserServiceDelegation {
+class ProfileViewController: UIViewController,UserServiceDelegation, AuthenticationServiceLogoutDelegate {
     
     //MARK: Properties
     @IBOutlet weak var nameField: UITextField!
     
     var userService: UserService = UserService()
+    var authenticationService: AuthenticationService = AuthenticationService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.authenticationService.logoutDelegate = self
         self.userService.delegate = self
         self.userService.getUser()
 
@@ -41,10 +43,17 @@ class ProfileViewController: UIViewController,UserServiceDelegation {
     */
     
     //MARK: Actions
+    
+    ///Function is called on update button click
     @IBAction func onUpdate(_ sender: UIButton) {
         self.userService.updateUser(user: [
                 "name": self.nameField.text!
             ])
+    }
+    
+    ///Function is called on edit button click
+    @IBAction func onLogoutClick(_ sender: UIButton) {
+        self.authenticationService.logout()
     }
     
     
@@ -75,6 +84,17 @@ class ProfileViewController: UIViewController,UserServiceDelegation {
     /// - Parameter data: Contains the newly updated user data
     public func onUserUpdateSuccess(data: User) {
         
+    }
+    
+    /// MARK: Logout delegate
+    public func onLogoutSuccess(data: Base) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.changeRootViewController(storboardName: "Main", viewControllerIdentifier: "Login")
+    }
+    
+    public func onLogoutFail(error: ValidationError) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.changeRootViewController(storboardName: "Main", viewControllerIdentifier: "Login")
     }
 
 }

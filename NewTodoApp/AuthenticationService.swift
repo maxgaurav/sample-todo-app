@@ -13,6 +13,7 @@ import ObjectMapper
 class AuthenticationService: BaseService {
     
     var delegate: AuthenticationServiceDelegate!
+    var logoutDelegate: AuthenticationServiceLogoutDelegate?
 
     
     ///Calls login api
@@ -64,10 +65,59 @@ class AuthenticationService: BaseService {
                 }
         }
     }
+    
+    ///Function calls the logout API
+    public func logout(){
+        var headers = self.baseHeader
+        let defaults = UserDefaults.standard
+        headers["Authorization"] = "Bearer " + defaults.string(forKey: defaultKeyStructure.accessToken)!
+        
+        Alamofire.request(self.getUrl(url: "oauth/logout"), method: .get,  headers: headers)
+            .validate()
+            .responseJSON(queue: self.queue){ response in
+                if let data = response.data {
+                    switch response.result{
+                    case .success:
+                        let json = String(data: data, encoding: .utf8)
+                        let logout = Mapper<Base>().map(JSONString: json!)
+                        self.setStatusCode(model: logout!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.logoutDelegate?.onLogoutSuccess(data: logout!)
+                        }
+                        
+                    case .failure:
+                        let json = String(data: data, encoding: String.Encoding.utf8)
+                        let errors = Mapper<ValidationError>().map(JSONString: json!)
+                        self.setStatusCode(model: errors!, response: response)
+                        
+                        //dispatching the content on main thread
+                        DispatchQueue.main.async {
+                            self.logoutDelegate?.onLogoutFail(error: errors!)
+                        }
+                    }
+                }else{
+                    let errors = Mapper<ValidationError>().map(JSONString: "")
+                    self.setStatusCode(model: errors!, response: response)
+                    
+                    //dispatching the content on main thread
+                    DispatchQueue.main.async {
+                        self.logoutDelegate?.onLogoutFail(error: errors!)
+                    }
+                }
+        }
+    }
 }
 
 ///Authentication delegation to handle various events
 protocol AuthenticationServiceDelegate: BaseErrorDelegation {
     func onLoginFail(error: ValidationError)
     func onLoginSuccess(data: Login)
+}
+
+///Logout delegations
+protocol AuthenticationServiceLogoutDelegate {
+    func onLogoutFail(error: ValidationError)
+    func onLogoutSuccess(data: Base)
 }
